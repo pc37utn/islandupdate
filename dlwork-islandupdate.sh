@@ -29,7 +29,9 @@ cp -a sites/all/libraries/*  $LIBBAK/
 
 echo  "** beginning disabling modules **"
 
-#    Disable modules
+#    Disable modulesdrush dis -y islandora_solr_views
+# dis solr_views first and enable it last because of delay
+drush dis -y islandora_solr_views
 drush dis -y islandora_batch_derivative_trigger
 drush dis -y islandora_datastream_exporter
 drush dis -y islandora_datastream_replace
@@ -37,7 +39,6 @@ drush dis -y islandora_bagit
 drush dis -y islandora_usage_stats
 drush dis -y islandora_scg
 drush dis -y islandora_collection_search
-drush dis -y islandora_solr_views
 drush dis -y islandora_solr_metadata
 drush dis -y islandora_solr
 drush dis -y islandora_solr_config
@@ -83,6 +84,10 @@ echo "** updating libraries"
 #update libraries
 cd sites/all/libraries/
 
+# internet archive bookreader
+rm -R bookreader
+git clone https://github.com/Islandora/internet_archive_bookreader.git
+mv ./internet_archive_bookreader ./bookreader
 
 #- tuque
 
@@ -342,7 +347,6 @@ drush en -y islandora_xacml_api
 drush en -y islandora_xacml_editor
 drush en -y islandora_compound_object
 drush en -y islandora_solr
-drush en -y islandora_solr_views
 drush en -y islandora_solr_metadata
 drush en -y islandora_bookmark
 drush en -y islandora_videojs
@@ -362,6 +366,7 @@ drush en -y islandora_batch_derivative_trigger
 drush en -y islandora_datastream_exporter
 drush en -y islandora_datastream_replace
 drush en -y islandora_bagit
+drush en -y islandora_solr_views
 
 echo "** updating XML Forms tables **"
 if [ -d "$UPDATE_EXEC_DIR/form_tables" ]; then
